@@ -12,3 +12,10 @@ canvasCtx.rect(20,40,50,50);							//	四角形を書く命令
 canvasCtx.fillStyle = "#FF0000";						//	四角形の色設定
 canvasCtx.fill();										//	描画する命令
 canvasCtx.closePath();									//	描画終了の命令
+
+//	円の描画
+canvasCtx.beginPath();
+canvasCtx.arc(240,160,20,0,Math.PI * 2,false);
+canvasCtx.fillStyle = 'green';
+canvasCtx.fill();
+canvasCtx.closePath();
