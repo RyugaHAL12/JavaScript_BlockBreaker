@@ -1,18 +1,32 @@
 //--定数--//
+//	ステージ
 const width = 500;
 const height = 500;
+
+//	ボール関係
 const ballRad = 10;
 const acceleX = 5;
 const acceleY = 5;
 const randomAccele = 2;
+
+//	パドル関係
+const paddleHeight = 10;
+const paddleWidth = 75;
+
+//	更新レート
 const drawInterval = 33;
 
+//	キャンバスの設定
 let canvasElem = document.getElementById('canvas');		//	要素の取得
 canvasElem.width = width;								//	キャンバスの横幅設定	
 canvasElem.height = height;								//	キャンバスの縦幅設定
 let canvasCtx = canvasElem.getContext("2d"); 			//	コンテキストを取得(設定とかをまとめたもの)
 
-//--変数--//
+export function getCanvasCtx(){
+	return canvasCtx;
+}
+
+//--グローバル変数--//
 let x = width / 2;
 let y = height -30;
 let dx = acceleX;
