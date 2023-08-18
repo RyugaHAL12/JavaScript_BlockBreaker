@@ -1,6 +1,11 @@
 //--定数--//
 const width = 500;
 const height = 500;
+const ballRad = 10;
+const acceleX = 5;
+const acceleY = 5;
+const randomAccele = 2;
+const drawInterval = 33;
 
 let canvasElem = document.getElementById('canvas');		//	要素の取得
 canvasElem.width = width;								//	キャンバスの横幅設定	
@@ -10,42 +15,90 @@ let canvasCtx = canvasElem.getContext("2d"); 			//	コンテキストを取得(�
 //--変数--//
 let x = width / 2;
 let y = height -30;
-let dx = 2;
-let dy = -2;
+let dx = acceleX;
+let dy = -acceleY;
 
+//	毎秒33ミリ秒で更新
+setInterval(draw,drawInterval);
 
-// //	四角形の描画
-// canvasCtx.beginPath();				//	描画開始の命令
-// canvasCtx.rect(20,40,50,50);			//	四角形を書く命令
-// canvasCtx.fillStyle = "#FF0000";		//	四角形の色設定
-// canvasCtx.fill();					//	描画する命令
-// canvasCtx.closePath();				//	描画終了の命令
+//	初期化
+function init(){
+}
 
-// //	円の描画
-// canvasCtx.beginPath();
-// canvasCtx.arc(240,160,20,0,Math.PI * 2,false);
-// canvasCtx.fillStyle = 'green';
-// canvasCtx.fill();
-// canvasCtx.closePath();
-
-// //	四角形の縁だけ描画
-// canvasCtx.beginPath();
-// canvasCtx.rect(160,10,100,40);
-// canvasCtx.strokeStyle = "rbga(0,0,255,0.5)";
-// canvasCtx.stroke();
-// canvasCtx.closePath();
-
+//	描画処理
 function draw(){
 	//	軌跡削除
 	canvasCtx.clearRect(0,0,width,height);
-
+	
+	//	反射判定
+	boundBall();
+	
 	//	描画
-	canvasCtx.beginPath();
-	canvasCtx.arc(x,y,10,0,Math.PI*2);
-	canvasCtx.fillStyle = "#0095DD";
-	canvasCtx.fill();
-	canvasCtx.closePath();
+	drawBall();
+	
 	x += dx;
 	y += dy;
 }
-setInterval(draw,33);
+
+//	ボール描画関数
+function drawBall(){
+	canvasCtx.beginPath();
+	canvasCtx.arc(x,y,ballRad,0,Math.PI*2);
+	canvasCtx.fillStyle = "#0095DD";
+	canvasCtx.fill();
+	canvasCtx.closePath();
+}
+
+//　ボール反射
+function boundBall(){
+
+	//	上下端
+	if(y + dy < ballRad || height - ballRad < y + dy){
+		switch(getRandomInt(3)){
+			case 1:
+				dy += getRandomInt(randomAccele);
+				break;
+			case 2:
+				dx += getRandomInt(randomAccele);
+				break;
+			case 3:
+				dy += getRandomInt(randomAccele);
+				dx += getRandomInt(randomAccele);
+				break;
+			case 0:
+				dy *=1.1;
+				dx *=1.1;
+				break;
+		}
+		dy = -dy;
+	}
+	
+	//	左右端
+	if(x + dx < ballRad || width - ballRad < x + dx){
+		switch(getRandomInt(3)){
+			case 1:
+				dy += getRandomInt(randomAccele);
+				break;
+			case 2:
+				dx += getRandomInt(randomAccele);
+				break;
+			case 3:
+				dy += getRandomInt(randomAccele);
+				dx += getRandomInt(randomAccele);
+				break;
+			case 0:
+				dy *=1.1;
+				dx *=1.1;
+				break;
+		}
+		dx = -dx;
+	}
+}
+
+//	乱数
+//	getRandomInt(max)
+//	max : 乱数の最大値(整数型)
+//	return :　生成されたint型の乱数
+function getRandomInt(max){
+	return Math.floor(Math.random() * max);		//Math.floor : 与えられた数値以下の最大の整数を返すらしい。
+}
