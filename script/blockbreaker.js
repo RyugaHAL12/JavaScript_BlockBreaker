@@ -15,11 +15,11 @@ let dy = -2;
 
 
 // //	四角形の描画
-// canvasCtx.beginPath();									//	描画開始の命令
-// canvasCtx.rect(20,40,50,50);							//	四角形を書く命令
-// canvasCtx.fillStyle = "#FF0000";						//	四角形の色設定
-// canvasCtx.fill();										//	描画する命令
-// canvasCtx.closePath();									//	描画終了の命令
+// canvasCtx.beginPath();				//	描画開始の命令
+// canvasCtx.rect(20,40,50,50);			//	四角形を書く命令
+// canvasCtx.fillStyle = "#FF0000";		//	四角形の色設定
+// canvasCtx.fill();					//	描画する命令
+// canvasCtx.closePath();				//	描画終了の命令
 
 // //	円の描画
 // canvasCtx.beginPath();
@@ -36,7 +36,9 @@ let dy = -2;
 // canvasCtx.closePath();
 
 function draw(){
-	
+	//	軌跡削除
+	canvasCtx.clearRect(0,0,width,height);
+
 	//	描画
 	canvasCtx.beginPath();
 	canvasCtx.arc(x,y,10,0,Math.PI*2);
