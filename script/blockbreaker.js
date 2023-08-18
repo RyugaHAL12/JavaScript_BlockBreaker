@@ -19,3 +19,10 @@ canvasCtx.arc(240,160,20,0,Math.PI * 2,false);
 canvasCtx.fillStyle = 'green';
 canvasCtx.fill();
 canvasCtx.closePath();
+
+//	四角形の縁だけ描画
+canvasCtx.beginPath();			
+canvasCtx.rect(160,10,100,40);	
+canvasCtx.strokeStyle = "rbga(0,0,255,0.5)";
+canvasCtx.stroke();				
+canvasCtx.closePath();			
