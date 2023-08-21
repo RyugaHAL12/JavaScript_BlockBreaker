@@ -35,6 +35,8 @@ let dy = -acceleY;		//	ボールの移動量(速度:Y軸)
 let paddleX = (canvasElem.width - paddleWidth) / 2;
 let paddleY = canvasElem.height - paddleHeight;
 
+//	イベントリスナー
+
 
 //	毎秒33ミリ秒で更新
 setInterval(gameLoop,drawInterval);
