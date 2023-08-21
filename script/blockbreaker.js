@@ -25,11 +25,15 @@ let canvasCtx = canvasElem.getContext("2d"); 			//	コンテキストを取得(�
 
 
 //--グローバル変数--//
+//	ボール
 let x = width / 2;		//	ボールの初期位置(X軸)
 let y = height -30;		//	ボールの初期位置(Y軸)
 let dx = acceleX;		//	ボールの移動量(速度:X軸)
 let dy = -acceleY;		//	ボールの移動量(速度:Y軸)
 
+//	パドル
+let paddleX = (canvasElem.width - paddleWidth) / 2;
+let paddleY = canvasElem.height - paddleHeight;
 
 
 //	毎秒33ミリ秒で更新
@@ -81,7 +85,11 @@ function drawBall(){
 
 //	パドル描画
 function drawPaddle(){
-
+	canvasCtx.beginPath();
+	canvasCtx.rect(paddleX,paddleY,paddleWidth,paddleHeight);
+	canvasCtx.fillStyle = "#0095DD";
+	canvasCtx.fill();
+	canvasCtx.closePath;
 }
 
 //　ボール反射判定
@@ -146,7 +154,9 @@ function getRandomInt(max){
 function setLimit(speed){
 	if(speedLimit < speed)
 		return speedLimit;
-	else if()
+	else if(speed < 0)
+		return acceleX;
+	else
 		return speed;
 }
 
