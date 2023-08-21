@@ -4,16 +4,17 @@ const width = 500;
 const height = 500;
 
 //	ボール関係
-const ballRad = 10;
-const acceleX = 5;
-const acceleY = 5;
-const randomAccele = 2;
+const ballRad = 10;		//	ボールの半径
+const acceleX = 3;
+const acceleY = 3;
+const randomAccele = 2;	//	ランダムの加速度,バウンド時に加算
+const speedLimit = 20;
 
 //	パドル関係
 const paddleHeight = 10;
 const paddleWidth = 75;
 
-//	更新レート
+//	更新レート(約30FPSで設定)
 const drawInterval = 33;
 
 //	キャンバスの設定
@@ -22,51 +23,71 @@ canvasElem.width = width;								//	キャンバスの横幅設定
 canvasElem.height = height;								//	キャンバスの縦幅設定
 let canvasCtx = canvasElem.getContext("2d"); 			//	コンテキストを取得(設定とかをまとめたもの)
 
-export function getCanvasCtx(){
-	return canvasCtx;
-}
 
 //--グローバル変数--//
-let x = width / 2;
-let y = height -30;
-let dx = acceleX;
-let dy = -acceleY;
+let x = width / 2;		//	ボールの初期位置(X軸)
+let y = height -30;		//	ボールの初期位置(Y軸)
+let dx = acceleX;		//	ボールの移動量(速度:X軸)
+let dy = -acceleY;		//	ボールの移動量(速度:Y軸)
+
+
 
 //	毎秒33ミリ秒で更新
-setInterval(draw,drawInterval);
+setInterval(gameLoop,drawInterval);
+setInterval(debugSpeed,500);
 
-//	初期化
+//	初期化(未使用)
 function init(){
 }
 
 //	描画処理
-function draw(){
-	//	軌跡削除
-	canvasCtx.clearRect(0,0,width,height);
-	
+function gameLoop(){
+	//	更新処理
+	update();
+
+	//	描画処理
+	draw();
+}
+
+function update(){
 	//	反射判定
-	boundBall();
-	
-	//	描画
-	drawBall();
-	
+	boundJudge();
+
+	//	ボールの移動？
 	x += dx;
 	y += dy;
+
+	//	変換
+	x = Math.trunc(x);
+	y = Math.trunc(y);
 }
 
-//	ボール描画関数
+
+//	描画関数
+function draw(){
+	drawBall();
+	drawPaddle();
+}
+
+//	ボール描画
 function drawBall(){
-	canvasCtx.beginPath();
-	canvasCtx.arc(x,y,ballRad,0,Math.PI*2);
-	canvasCtx.fillStyle = "#0095DD";
-	canvasCtx.fill();
-	canvasCtx.closePath();
+	canvasCtx.clearRect(0,0,width,height);		//	軌跡削除
+	canvasCtx.beginPath();						//	ボール描画開始
+	canvasCtx.arc(x,y,ballRad,0,Math.PI*2);		//	ボールの描画
+	canvasCtx.fillStyle = "#0095DD";			//	ボールの色設定	
+	canvasCtx.fill();							//	ボールの塗りつぶし
+	canvasCtx.closePath();						//	描画終了
 }
 
-//　ボール反射
-function boundBall(){
+//	パドル描画
+function drawPaddle(){
 
-	//	上下端
+}
+
+//　ボール反射判定
+function boundJudge(){
+
+	//	上下端判定 + ランダム加減速
 	if(y + dy < ballRad || height - ballRad < y + dy){
 		switch(getRandomInt(3)){
 			case 1:
@@ -85,9 +106,11 @@ function boundBall(){
 				break;
 		}
 		dy = -dy;
+		setLimit(dy);
+		Math.trunc(dy);
 	}
 	
-	//	左右端
+	//	左右端判定 + ランダム加減速
 	if(x + dx < ballRad || width - ballRad < x + dx){
 		switch(getRandomInt(3)){
 			case 1:
@@ -106,6 +129,8 @@ function boundBall(){
 				break;
 		}
 		dx = -dx;
+		setLimit(dx);
+		Math.trunc(dx);
 	}
 }
 
@@ -115,4 +140,20 @@ function boundBall(){
 //	return :　生成されたint型の乱数
 function getRandomInt(max){
 	return Math.floor(Math.random() * max);		//Math.floor : 与えられた数値以下の最大の整数を返すらしい。
+}
+
+//	速度制御用関数
+function setLimit(speed){
+	if(speedLimit < speed)
+		return speedLimit;
+	else if()
+		return speed;
+}
+
+//	速度デバッグ用
+function debugSpeed(){
+	console.log("x : " + x);
+	console.log("dx : " + dx);
+	console.log("y : " + y);
+	console.log("dy : " + dy);
 }
